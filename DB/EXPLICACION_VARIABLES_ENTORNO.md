@@ -406,7 +406,7 @@ fi
 # 5. Si hay más archivos, repite con el siguiente
 ```
 
-### 🚫 Lo que NO necesitas hacer:
+### Lo que NO necesitas hacer:
 
 ```bash
 #  NO necesitas declarar 'f' antes del for:
@@ -423,7 +423,7 @@ done
 #  NO necesitas incrementar manualmente:
 f=$f+1  # ← INNECESARIO, el for avanza solo
 
-# ✅ El 'for' avanza automáticamente al siguiente elemento
+#  El 'for' avanza automáticamente al siguiente elemento
 ```
 
 ### Conceptos clave:
