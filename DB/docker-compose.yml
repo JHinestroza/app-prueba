@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  sqlserver:
+
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "prueba12345!"
+      # Especifica la edición Developer de SQL Server (gratuita para desarrollo y pruebas)
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      # Persistencia de datos de SQL Server en un volumen nombrado
+      - sql_data:/var/opt/mssql
+      # Monta el directorio local 'init' con scripts SQL al contenedor
+      - ./init:/docker-initdb.d
+    command:
+      - /bin/bash
+      - -c
+      - |
+
+        
+        # Iniciar SQL Server en segundo plano usando '&'
+        # Esto permite que el script continúe ejecutándose mientras SQL Server inicia
+        /opt/mssql/bin/sqlservr &
+        
+        echo "Esperando a que SQL Server esté listo..."
+        sleep 30
+        
+        # Ejecutar todos los archivos .sql encontrados en el directorio montado
+        for f in /docker-initdb.d/*.sql; do 
+        # 	Es un archivo regular (file) y se coloca $$ para evitar conflictos con el entorno de Docker
+          if [ -f "$$f" ]; then
+            echo "Ejecutando script: $$f"
+          
+            # Nota: SQL Server 2022 usa /opt/mssql-tools18/ 
+            # Las versiones anteriores usaban /opt/mssql-tools/
+            /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P prueba12345! -C -i "$$f"
+            
+            if [ $$? -eq 0 ]; then
+              echo "Script $$f ejecutado exitosamente"
+            else
+              echo "Error al ejecutar script $$f"
+            fi
+          fi
+        done
+        
+        echo "Inicialización completa. SQL Server está listo."
+        
+        wait
+
+volumes:
+  sql_data:
