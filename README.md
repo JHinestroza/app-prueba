@@ -94,3 +94,9 @@ npm install express
 npm install --save-dev nodemon # viene siendo como el npm run dev
 
 ```
+
+Agregar esto al scripts de json 
+```json 
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js" 
+```
