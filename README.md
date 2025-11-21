@@ -1,5 +1,11 @@
 # Sistema de Gestión de Expedientes e Indicios - DICRI / MP Guatemala
 
+La manera mas rapida de levantar este servicio es con docker-compoe, basta con tener docker abierto, si es windows, y correr el siguiente comando: 
+
+```bash
+docker-compose up
+```
+
 [![React](https://img.shields.io/badge/React-19.2.0-blue.svg)](https://reactjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-20.x-green.svg)](https://nodejs.org/)
 [![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-red.svg)](https://www.microsoft.com/sql-server)
@@ -9,7 +15,7 @@ Sistema completo para la gestión de expedientes e indicios forenses desarrollad
 
 ---
 
-## 📋 Tabla de Contenidos
+##  Tabla de Contenidos
 
 - [Arquitectura del Sistema](#-arquitectura-del-sistema)
 - [Tecnologías Utilizadas](#-tecnologías-utilizadas)
@@ -24,7 +30,7 @@ Sistema completo para la gestión de expedientes e indicios forenses desarrollad
 
 ---
 
-## 🏗️ Arquitectura del Sistema
+##  Arquitectura del Sistema
 
 El sistema implementa una arquitectura de tres capas:
 
@@ -71,7 +77,7 @@ El sistema implementa una arquitectura de tres capas:
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+##  Tecnologías Utilizadas
 
 ### Backend
 
@@ -96,41 +102,41 @@ El sistema implementa una arquitectura de tres capas:
 
 ---
 
-## ✨ Características Principales
+##  Características Principales
 
 ### Gestión de Expedientes
-- ✅ Crear expedientes con fecha, técnico y descripción
-- ✅ Listar expedientes con filtros (estado, técnico, fecha)
-- ✅ Actualizar información del expediente
-- ✅ Eliminar expedientes (cascade a indicios y revisiones)
+-  Crear expedientes con fecha, técnico y descripción
+-  Listar expedientes con filtros (estado, técnico, fecha)
+-  Actualizar información del expediente
+-  Eliminar expedientes (cascade a indicios y revisiones)
 
 ### Gestión de Indicios
-- ✅ Registrar indicios asociados a expedientes
-- ✅ Campos: descripción, color, tamaño, peso, ubicación
-- ✅ Múltiples indicios por expediente
-- ✅ Actualización y eliminación de indicios
+-  Registrar indicios asociados a expedientes
+-  Campos: descripción, color, tamaño, peso, ubicación
+-  Múltiples indicios por expediente
+-  Actualización y eliminación de indicios
 
 ### Flujo de Aprobación
-- ✅ Estados: En Revisión, Aprobado, Rechazado
-- ✅ Coordinadores pueden aprobar/rechazar
-- ✅ Justificación obligatoria al rechazar
-- ✅ Historial de revisiones
+-  Estados: En Revisión, Aprobado, Rechazado
+-  Coordinadores pueden aprobar/rechazar
+-  Justificación obligatoria al rechazar
+-  Historial de revisiones
 
 ### Reportes y Estadísticas
-- ✅ Dashboard con métricas en tiempo real
-- ✅ Filtros por estado, técnico y fechas
-- ✅ Conteo de expedientes e indicios
-- ✅ Historial de revisiones
+-  Dashboard con métricas en tiempo real
+-  Filtros por estado, técnico y fechas
+-  Conteo de expedientes e indicios
+-  Historial de revisiones
 
 ### Autenticación y Roles
-- ✅ Login con cifrado MD5
-- ✅ Sesión en localStorage
-- ✅ 3 roles: Técnico, Coordinador, Administrador
-- ✅ Control de acceso por rol
+-  Login con cifrado MD5
+-  Sesión en localStorage
+-  3 roles: Técnico, Coordinador, Administrador
+-  Control de acceso por rol
 
 ---
 
-## 📁 Estructura del Proyecto
+##  Estructura del Proyecto
 
 ```
 app-prueba/
@@ -191,7 +197,7 @@ app-prueba/
 
 ---
 
-## 🚀 Instalación y Configuración
+##  Instalación y Configuración
 
 ### Prerrequisitos
 
@@ -255,7 +261,7 @@ npm install
 
 ---
 
-## 🐳 Despliegue con Docker
+##  Despliegue con Docker
 
 ### Opción 1: Despliegue Completo (Recomendado)
 
@@ -267,9 +273,9 @@ docker-compose up -d
 ```
 
 Esto levantará:
-- ✅ SQL Server (puerto 1433)
-- ✅ Backend API (puerto 3000)
-- ✅ Frontend (puerto 80)
+-  SQL Server (puerto 1433)
+-  Backend API (puerto 3000)
+-  Frontend (puerto 80)
 
 Acceder a: **http://localhost**
 
@@ -323,7 +329,7 @@ docker-compose logs -f backend
 
 ---
 
-## 👤 Uso del Sistema
+##  Uso del Sistema
 
 ### Usuarios de Prueba
 
@@ -352,7 +358,7 @@ El sistema viene con usuarios precargados:
 
 ---
 
-## 📡 API Endpoints
+##  API Endpoints
 
 ### Autenticación
 
@@ -425,62 +431,9 @@ Respuesta:
 
 ## 🗄️ Base de Datos
 
-### Modelo Entidad-Relación
-
-```
-┌─────────────┐
-│   Rol       │
-│  - id       │
-│  - rol      │
-└──────┬──────┘
-       │
-       │ 1:N
-       │
-┌──────▼──────────────┐
-│   Usuarios          │
-│  - id               │
-│  - nombre           │
-│  - apellido         │
-│  - correo           │
-│  - contrasenia (MD5)│
-│  - rol_id  (FK)     │
-└────────┬────────────┘
-         │ 1:N
-         │
-┌────────▼────────────┐       ┌─────────────┐
-│   Expediente        │  N:1  │  Estados    │
-│  - id               │───────│  - id       │
-│  - fecha_registro   │       │  - nombre   │
-│  - descripcion      │       └─────────────┘
-│  - justificacion    │
-│  - Usuarios_id (FK) │
-│  - Estados_id  (FK) │
-└────────┬────────────┘
-         │ 1:N
-         │
-┌────────▼────────────┐
-│   Indicios          │
-│  - id               │
-│  - descripcion      │
-│  - color            │
-│  - tamano           │
-│  - peso             │
-│  - ubicacion        │
-│  - expediente_id(FK)│
-│  - Usuarios_id  (FK)│
-└─────────────────────┘
-
-┌─────────────────────┐
-│   Revision          │
-│  - id               │
-│  - fecha_revision   │
-│  - Usuarios_id  (FK)│  (Coordinador)
-│  - Estados_id   (FK)│  (Resultado)
-│  - expediente_id(FK)│
-└─────────────────────┘
-```
-
 ### Stored Procedures Principales
+
+No se cargan automaticamente
 
 #### Autenticación
 - `sp_Login` - Validar credenciales
@@ -515,31 +468,31 @@ Respuesta:
 
 ---
 
-## 🔒 Seguridad
+##  Seguridad
 
 ### Cifrado de Contraseñas
-- ✅ Uso de **MD5** para hash de contraseñas
-- ✅ Cifrado en el cliente antes de enviar al backend
-- ✅ Contraseñas nunca almacenadas en texto plano
+-  Uso de **MD5** para hash de contraseñas
+-  Cifrado en el cliente antes de enviar al backend
+-  Contraseñas nunca almacenadas en texto plano
 
 ### CORS
-- ✅ Configuración de orígenes permitidos
-- ✅ Control de credenciales
-- ✅ Headers personalizados permitidos
+-  Configuración de orígenes permitidos
+-  Control de credenciales
+-  Headers personalizados permitidos
 
 ### SQL Injection
-- ✅ 100% uso de **Stored Procedures**
-- ✅ Parámetros vinculados (parameterized queries)
-- ✅ Validación de entradas
+-  100% uso de **Stored Procedures**
+-  Parámetros vinculados (parameterized queries)
+-  Validación de entradas
 
 ### Validaciones
-- ✅ Validación de campos en backend
-- ✅ Validación con React Hook Form en frontend
-- ✅ Manejo de errores consistente
+-  Validación de campos en backend
+-  Validación con React Hook Form en frontend
+-  Manejo de errores consistente
 
 ---
 
-## 📝 Scripts Disponibles
+##  Scripts Disponibles
 
 ### Backend
 
@@ -584,7 +537,7 @@ curl -X POST http://localhost:3000/api/auth/login \
 
 ---
 
-## 📦 Colección Postman
+##  Colección Postman
 
 Puedes importar esta colección para probar todos los endpoints:
 
@@ -617,7 +570,7 @@ Puedes importar esta colección para probar todos los endpoints:
 
 ---
 
-## 🤝 Contribución
+##  Contribución
 
 Este es un proyecto de prueba técnica. Para contribuir:
 
@@ -628,28 +581,3 @@ Este es un proyecto de prueba técnica. Para contribuir:
 5. Abrir Pull Request
 
 ---
-
-## 📄 Licencia
-
-Este proyecto fue desarrollado como prueba técnica para DICRI / Ministerio Público de Guatemala.
-
----
-
-## 👨‍💻 Autor
-
-**Desarrollador**: [Tu Nombre]  
-**Fecha**: Noviembre 2025  
-**Proyecto**: Prueba Técnica DICRI - Sistema de Gestión de Expedientes e Indicios
-
----
-
-## 📞 Soporte
-
-Para dudas o problemas:
-- Email: soporte@dicri.gob.gt
-- Documentación: Este README
-- Issues: [GitHub Issues](link-al-repo)
-
----
-
-**¡Sistema listo para producción! 🚀**
