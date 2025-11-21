@@ -1,10 +1,14 @@
 # Sistema de Gestión de Expedientes e Indicios - DICRI / MP Guatemala
 
-La manera mas rapida de levantar este servicio es con docker-compoe, basta con tener docker abierto, si es windows, y correr el siguiente comando: 
+El sistema no se encuentra terminado, faltaron varias implementaciones como agregar indicios, aceptar y rechazar los expedientes. 
+
+La manera mas rapida de levantar este servicio en este proyecto es con docker-s, basta con tener docker abierto, si es windows, y correr el siguiente comando: 
 
 ```bash
 docker-compose up
 ```
+
+de igual manera se pueden levantar individualmente. 
 
 [![React](https://img.shields.io/badge/React-19.2.0-blue.svg)](https://reactjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-20.x-green.svg)](https://nodejs.org/)
