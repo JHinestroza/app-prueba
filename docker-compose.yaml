@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # Base de Datos SQL Server
+  sqlserver:
+    build:
+      context: ./DB
+      dockerfile: Dockerfile
+    container_name: dicri-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "prueba12345!" # contrase;a este proyecto para ambiente de desarrollo, en producción usar env
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - dicri-network
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "prueba12345!" -C -Q "SELECT 1"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+  # Backend API NodeJS
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: dicri-backend
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      DB_SERVER: sqlserver
+      DB_PORT: 1433
+      DB_USER: sa
+      DB_PASSWORD: prueba12345!
+      DB_DATABASE: PruebaTecnica
+      DB_ENCRYPT: "false"
+      DB_TRUST_SERVER_CERTIFICATE: "true"
+      CORS_ORIGIN: http://localhost:5173
+    ports:
+      - "3000:3000"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - dicri-network
+    restart: unless-stopped
+
+  # Frontend React
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: dicri-frontend
+    environment:
+      VITE_API_URL: http://localhost:3000/api
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Frontend/src:/app/src
+    depends_on:
+      - backend
+    networks:
+      - dicri-network
+    restart: unless-stopped
+
+volumes:
+  sql_data:
+
+networks:
+  dicri-network:
+    driver: bridge

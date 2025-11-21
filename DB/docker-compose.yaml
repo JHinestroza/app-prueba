@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # Base de Datos SQL Server
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: dicri-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "prueba12345!"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+      - ./init:/docker-initdb.d
+    networks:
+      - dicri-network
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "prueba12345!" -C -Q "SELECT 1"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    command:
+      - /bin/bash
+      - -c
+      - |
+        /opt/mssql/bin/sqlservr &
+        echo "Esperando a que SQL Server esté listo..."
+        sleep 30
+        for f in /docker-initdb.d/*.sql; do 
+          if [ -f "$$f" ]; then
+            echo "Ejecutando script: $$f"
+            /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P prueba12345! -C -i "$$f"
+            if [ $$? -eq 0 ]; then
+              echo "Script $$f ejecutado exitosamente"
+            else
+              echo "Error al ejecutar script $$f"
+            fi
+          fi
+        done
+        echo "Inicialización completa. SQL Server está listo."
+        wait
+
+ 
