@@ -86,22 +86,22 @@ const startServer = async () => {
     try {
         // Intentar conectar a la base de datos
         await getConnection();
-        console.log('✅ Conexión a la base de datos establecida');
+        console.log('[DB] Conexion establecida correctamente');
 
         app.listen(PORT, () => {
             console.log('╔═══════════════════════════════════════════════╗');
-            console.log('║   🚀 Servidor Backend DICRI                  ║');
+            console.log('║    Servidor Backend DICRI                  ║');
             console.log('╠═══════════════════════════════════════════════╣');
-            console.log(`║   📡 Puerto: ${PORT}                            ║`);
-            console.log(`║   🌍 Entorno: ${process.env.NODE_ENV || 'development'}             ║`);
-            console.log(`║   🔗 URL: http://localhost:${PORT}              ║`);
-            console.log(`║   📚 Docs: http://localhost:${PORT}/           ║`);
-            console.log(`║   ❤️  Health: http://localhost:${PORT}/health    ║`);
+            console.log(`║    Puerto: ${PORT}                            ║`);
+            console.log(`║    Entorno: ${process.env.NODE_ENV || 'development'}             ║`);
+            console.log(`║    URL: http://localhost:${PORT}              ║`);
+            console.log(`║    Docs: http://localhost:${PORT}/           ║`);
+            console.log(`║    Health: http://localhost:${PORT}/health    ║`);
             console.log('╚═══════════════════════════════════════════════╝');
         });
     } catch (error) {
-        console.error('❌ Error al iniciar el servidor:', error.message);
-        console.error('Verifica que SQL Server esté corriendo y las credenciales sean correctas');
+        console.error('ERROR: No se pudo iniciar el servidor:', error.message);
+        console.error('Verifica que SQL Server este corriendo y las credenciales sean correctas');
         process.exit(1);
     }
 };

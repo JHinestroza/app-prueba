@@ -32,10 +32,10 @@ async function getConnection() {
         }
 
         pool = await sql.connect(config);
-        console.log('✅ Conexión a SQL Server establecida');
+        console.log('[SQL] Conexion pool inicializado');
         return pool;
     } catch (error) {
-        console.error('❌ Error al conectar con SQL Server:', error.message);
+        console.error('[SQL] Error de conexion:', error.message);
         throw error;
     }
 }
@@ -48,10 +48,10 @@ async function closeConnection() {
         if (pool) {
             await pool.close();
             pool = null;
-            console.log('✅ Conexión a SQL Server cerrada');
+            console.log('[SQL] Pool de conexiones cerrado');
         }
     } catch (error) {
-        console.error('❌ Error al cerrar conexión:', error.message);
+        console.error('[SQL] Error al cerrar pool:', error.message);
     }
 }
 
@@ -74,7 +74,7 @@ async function executeStoredProcedure(procedureName, params = {}) {
         const result = await request.execute(procedureName);
         return result;
     } catch (error) {
-        console.error(`❌ Error ejecutando SP ${procedureName}:`, error.message);
+        console.error(`[SQL] Error en stored procedure ${procedureName}:`, error.message);
         throw error;
     }
 }
