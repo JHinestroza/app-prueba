@@ -9,7 +9,7 @@ services:
     container_name: dicri-sqlserver
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "prueba12345!"
+      SA_PASSWORD: "prueba12345!" # contrase;a este proyecto para ambiente de desarrollo, en producción usar env
       MSSQL_PID: "Developer"
     ports:
       - "1433:1433"
