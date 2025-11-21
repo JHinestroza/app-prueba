@@ -1,1 +1,7 @@
 node_modules/
+.env
+EXPLICACION_VARIABLES_ENTORNO.md
+logs/
+*.log   
+
+README.md
